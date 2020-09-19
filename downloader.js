@@ -32,16 +32,23 @@ const downloadEpisode = (date) => {
 
   const dateString = isoDateString(date),
     filename = generateFilename(date),
-    filePath = [basePath, filename].join('/')
+    filePath = [basePath, filename].join('/'),
+    fileAlreadyExists = fs.existsSync(filePath)
+
+  if (fileAlreadyExists) {
+    console.log(`Skipping download for ${filename}; file already exists.`)
+    addOneDay(date)
+    downloadEpisode(date)
+  }
 
   console.log(`Downloading episode for: ${dateString}`)
 
   request(generateLink(date))
-  .on('data', data => {}) // this line MUST be here or no data is saved in the file. no idea why .-.
+  .on('data', data => {}) // this line MUST be here or no data is saved in the file. no idea why 🙃
   .on('response', (res) => {
     if (res.statusCode === 404) {
       console.log(`No episode found on: ${dateString}`)
-      // delete the file that was created
+      // delete the file that was created, which will now just contain HTML for a 404 page
       fs.unlink(filePath, (err) => {
         if (err) {
           console.error(`Error deleting file ${filename}: ${err}`)
@@ -50,8 +57,7 @@ const downloadEpisode = (date) => {
     }
   })
   .on('error', (err) => {
-    console.warn(`Error downloading episode for: ${dateString}. Error: ${err}. Retrying...`)
-    downloadEpisode(date)
+    console.error(`Error downloading episode for: ${dateString}. Error: ${err}`)
   })
   .on('end', () => {
     addOneDay(date)

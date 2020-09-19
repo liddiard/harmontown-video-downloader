@@ -9,4 +9,6 @@ Batch download video episodes of the podcast [Harmontown](http://harmontown.com/
 3. Run `npm install`.
 4. Run `npm start`.
 
-Upon running `npm start`, the script will begin downloading video episodes to the `videos` folder, sequentially, starting with the first video episode from 2015. You can also specify a ISO-formatted date with the `npm start` command, like `npm start 2017-05-03`, which would only download episodes airing on or after May 3, 2017.
+Upon running `npm start`, the script will begin downloading video episodes to the `videos` folder, sequentially, starting with the first video episode from 2015. 
+
+You can also specify a [ISO-formatted date](https://en.wikipedia.org/wiki/ISO_8601) with the `npm start` command to begin downloading from that date. For example, `npm start 2017-05-03` would only download episodes airing on or after May 3, 2017.
