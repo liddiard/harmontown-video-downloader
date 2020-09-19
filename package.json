@@ -1,0 +1,18 @@
+{
+  "name": "harmontown-video-downloader",
+  "version": "1.0.0",
+  "description": "Script to batch download video episodes of the podcast Harmontown from harmontown.com",
+  "main": "downloader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "10",
+    "npm": "6"
+  },
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
