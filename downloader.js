@@ -1,5 +1,6 @@
 const fs = require('fs'),
-  request = require('request')
+  request = require('request'),
+  progress = require('request-progress')
 
 
 const basePath = 'videos' // folder to save videos, exclude trailing slash
@@ -25,6 +26,13 @@ const generateFilename = (date) =>
   `harmontown-${isoDateString(date)}.mp4`
 
 
+const renderProgress = ({ percent, speed, time }) => {
+  process.stdout.clearLine();
+  process.stdout.cursorTo(0);
+  process.stdout.write(`${Number(percent * 100).toFixed(1)}%  ${Number(speed / 1024 / 1024).toFixed(1)} MB/s  ${Number(time.elapsed).toFixed()} sec elapsed  ${Number(time.remaining).toFixed()} sec remaining`);
+}
+
+
 const downloadEpisode = (date) => {
   if (date > new Date()) {
     return console.log('Done.')
@@ -43,7 +51,8 @@ const downloadEpisode = (date) => {
 
   console.log(`Downloading episode for: ${dateString}`)
 
-  request(generateLink(date))
+  progress(request(generateLink(date)))
+  .on('progress', renderProgress)
   .on('data', data => {}) // this line MUST be here or no data is saved in the file. no idea why 🙃
   .on('response', (res) => {
     if (res.statusCode === 404) {
@@ -60,6 +69,7 @@ const downloadEpisode = (date) => {
     console.error(`Error downloading episode for: ${dateString}. Error: ${err}`)
   })
   .on('end', () => {
+    process.stdout.write('\n'); // end the progress indicator line
     addOneDay(date)
     downloadEpisode(date)
   })
