@@ -49,14 +49,14 @@ const downloadEpisode = (date) => {
     downloadEpisode(date)
   }
 
-  console.log(`Downloading episode for: ${dateString}`)
+  console.log(`Downloading episode: ${filename}`)
 
   progress(request(generateLink(date)))
   .on('progress', renderProgress)
   .on('data', data => {}) // this line MUST be here or no data is saved in the file. no idea why 🙃
   .on('response', (res) => {
     if (res.statusCode === 404) {
-      console.log(`No episode found on: ${dateString}`)
+      console.log(`No episode found on date: ${dateString}`)
       // delete the file that was created, which will now just contain HTML for a 404 page
       fs.unlink(filePath, (err) => {
         if (err) {
@@ -66,7 +66,7 @@ const downloadEpisode = (date) => {
     }
   })
   .on('error', (err) => {
-    console.error(`Error downloading episode for: ${dateString}. Error: ${err}`)
+    console.error(`Error downloading episode for date: ${dateString}. Error: ${err}`)
   })
   .on('end', () => {
     process.stdout.write('\n'); // end the progress indicator line
