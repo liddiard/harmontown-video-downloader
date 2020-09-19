@@ -27,9 +27,12 @@ const generateFilename = (date) =>
 
 
 const renderProgress = ({ percent, speed, time }) => {
+  if (!percent) {
+    return // no progress has been made yet so don't show anything
+  }
   process.stdout.clearLine();
   process.stdout.cursorTo(0);
-  process.stdout.write(`${Number(percent * 100).toFixed(1)}%  ${Number(speed / 1024 / 1024).toFixed(1)} MB/s  ${Number(time.elapsed).toFixed()} sec elapsed  ${Number(time.remaining).toFixed()} sec remaining`);
+  process.stdout.write(`${Number(percent * 100).toFixed(1)}%  ${Number(speed / 1024 / 1024).toFixed(1)} MB/s  ${Number(time.elapsed).toFixed()}s elapsed  ${Number(time.remaining).toFixed()}s remaining`);
 }
 
 
