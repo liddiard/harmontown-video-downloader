@@ -5,9 +5,13 @@ const fs = require('fs'),
 
 const basePath = 'videos' // folder to save videos, exclude trailing slash
 
-// default to date of first video episode
+// default to date of the first video episode
 // https://www.harmontown.com/2015/01/video-episode-132-you-make-my-shadow-run/
 const startDate = new Date(process.argv[2] || '2015-01-25')
+
+// date of the last episode (post date is 2 days after air date)
+// https://www.harmontown.com/2019/12/video-episode-360-cliffhanger/
+const endDate = new Date('2019-12-02')
 
 
 const addOneDay = (date) =>
@@ -37,7 +41,7 @@ const renderProgress = ({ percent, speed, time }) => {
 
 
 const downloadEpisode = (date) => {
-  if (date > new Date()) {
+  if (date > endDate) {
     return console.log('Done.')
   }
 
