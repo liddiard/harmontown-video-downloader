@@ -4,6 +4,7 @@
   "description": "Script to batch download video episodes of the podcast Harmontown from harmontown.com",
   "main": "downloader.js",
   "scripts": {
+    "start": "node downloader.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
